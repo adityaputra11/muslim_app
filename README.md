@@ -1,8 +1,10 @@
 # muslim_app
 
 A new Flutter application.
+Muslim App with pray schedule, map, quran
 
 ## Getting Started
+
 
 This project is a starting point for a Flutter application.
 
