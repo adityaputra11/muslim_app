@@ -2,6 +2,7 @@ import 'package:circle_bottom_navigation/circle_bottom_navigation.dart';
 import 'package:circle_bottom_navigation/widgets/tab_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:muslim_app/view/compass.dart';
 import 'package:muslim_app/view/home.Dart';
 
 void main() => runApp(MainApp());
@@ -32,9 +33,7 @@ class _MainPageState extends State<MainPage> {
       'Al-Quran',
     ),
     MyHomePage(),
-    Text(
-      'Mesjid',
-    ),
+    MyCompass()
   ];
   @override
   Widget build(BuildContext context) {

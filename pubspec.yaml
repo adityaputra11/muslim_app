@@ -17,6 +17,9 @@ environment:
   sdk: ">=2.2.0 <3.0.0"
 
 dependencies:
+  permission_handler: ^5.0.1+1
+  flutter_compass: ^0.4.3
+  location: ^3.0.2
   adobe_xd: ^1.0.0+1
   shared_preferences: ^0.5.10
   android_alarm_manager: ^0.4.5+11

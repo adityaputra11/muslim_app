@@ -106,7 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
   DateTime birthday = DateTime.now();
-  DateTime date2 = DateTime(2020, 08, 30, 04, 28, 00);
+  DateTime date2 = DateTime(2020, 08, 30, 15, 26, 00);
 
   void _onSwitchImsak(bool b) {
     setState(() {
@@ -117,7 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
   startTimer() async {
     print("Running");
     await AndroidAlarmManager.oneShot(
-      Duration(seconds: 10),
+      Duration(seconds: date2.difference(birthday).inSeconds),
       // Ensure we have a unique alarm ID.
       Random().nextInt(pow(2, 31)),
       callback,
@@ -276,7 +276,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
-                                                    "Subuh ",
+                                                    "Ashar ",
                                                     style: TextStyle(
                                                         color: Colors.green,
                                                         fontSize: 20.0,
@@ -289,7 +289,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                   ),
                                                   Text(
                                                     snapshot
-                                                        .data.jadwal.data.subuh,
+                                                        .data.jadwal.data.ashar,
                                                     style: TextStyle(
                                                         color: Colors.grey[600],
                                                         fontWeight:
