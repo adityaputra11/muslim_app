@@ -1,7 +1,11 @@
+import 'dart:async';
+import 'dart:ffi';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_compass/flutter_compass.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 void main() => runApp(MyCompass());
@@ -16,15 +20,39 @@ class MyCompass extends StatefulWidget {
 }
 
 class _MyCompassState extends State<MyCompass> {
+  Completer<GoogleMapController> _controller = Completer();
+  Position _post;
   bool _hasPermissions = false;
   double _lastRead = 0;
   DateTime _lastReadAt;
+  LatLng _latLng = LatLng(3.595196, 98.672226);
+  static final CameraPosition _kGooglePlex = CameraPosition(
+    target: LatLng(37.42796133580664, -122.085749655962),
+    zoom: 14.4746,
+  );
+  static final CameraPosition _kLake = CameraPosition(
+      bearing: 192.8334901395799,
+      target: LatLng(37.43296265331129, -122.08832357078792),
+      tilt: 59.440717697143555,
+      zoom: 19.151926040649414);
+
+
 
   @override
   void initState() {
     super.initState();
-
+    _stateSetLat();
     _fetchPermissionStatus();
+  }
+
+  Future<Position> _getLat() async {
+    Position position = await Geolocator()
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    return position;
+  }
+
+  void _stateSetLat() {
+    _getLat().then((value) => _latLng = LatLng(value.latitude, value.longitude));
   }
 
   @override
@@ -44,38 +72,34 @@ class _MyCompassState extends State<MyCompass> {
   }
 
   Widget _buildManualReader() {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Row(
-        children: <Widget>[
-          RaisedButton(
-            child: Text('Read Value'),
-            onPressed: () async {
-              final double tmp = await FlutterCompass.events.first;
-              setState(() {
-                _lastRead = tmp;
-                _lastReadAt = DateTime.now();
-              });
+    return
+        Container(
+          height: MediaQuery.of(context).size.height *0.8,
+          width:  MediaQuery.of(context).size.width,
+          child:  GoogleMap(
+            mapType: MapType.hybrid,
+            initialCameraPosition: _kGooglePlex,
+            onMapCreated: (GoogleMapController controller) {
+              _controller.complete(controller);
             },
           ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: <Widget>[
-                Text(
-                  '$_lastRead',
-                  style: Theme.of(context).textTheme.caption,
-                ),
-                Text(
-                  '$_lastReadAt',
-                  style: Theme.of(context).textTheme.caption,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
+        );
+
+//          Expanded(
+//            child: Column(
+//              crossAxisAlignment: CrossAxisAlignment.end,
+//              children: <Widget>[
+//                Text(
+//                  '$_lastRead',
+//                  style: Theme.of(context).textTheme.caption,
+//                ),
+//                Text(
+//                  '$_lastReadAt',
+//                  style: Theme.of(context).textTheme.caption,
+//                ),
+//              ],
+//            ),
+//          )
   }
 
   Widget _buildCompass() {
@@ -104,9 +128,9 @@ class _MyCompassState extends State<MyCompass> {
         return Container(
           alignment: Alignment.center,
           child: Transform.rotate(
-            angle: ((direction ?? 0) * (math.pi / 180) * -1),
-            child: Image.asset('assets/compass.jpg'),
-          ),
+              angle: ((direction ?? 0) * (math.pi / 180) * -1),
+              // child: Image.asset('assets/compass.jpg'),
+              child: _latLng == null ? Text("wait") : Text('$_latLng')),
         );
       },
     );

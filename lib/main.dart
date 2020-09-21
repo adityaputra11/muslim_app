@@ -33,7 +33,8 @@ class _MainPageState extends State<MainPage> {
       'Al-Quran',
     ),
     MyHomePage(),
-    MyCompass()
+    MyCompass(),
+
   ];
   @override
   Widget build(BuildContext context) {

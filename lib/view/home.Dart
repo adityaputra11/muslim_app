@@ -5,6 +5,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hijri/hijri_calendar.dart';
 import 'package:muslim_app/component/itemPray.dart';
 import 'package:muslim_app/model/dataPray.dart';
 import 'package:muslim_app/util/CountDowntTimer.dart';
@@ -104,6 +105,8 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 1;
   bool _isImsakActive = false;
   int _counter = 0;
+
+  var _format = new HijriCalendar.now();
 
   DateTime birthday = DateTime.now();
   DateTime date2 = DateTime(2020, 08, 30, 15, 26, 00);
@@ -378,7 +381,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 },
                                               ),
                                             )),
-                                    Text("Jadwal Sholat"),
+                                    Text("${_format.fullDate()}"),
                                     Builder(
                                         builder: (context) => Material(
                                               color: Colors.transparent,
